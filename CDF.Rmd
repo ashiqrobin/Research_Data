@@ -1,0 +1,60 @@
+---
+title: "CDF"
+author: "Md Ashiqul Amin (ma3359)"
+date: "October 2, 2019"
+output: pdf_document
+---
+
+```{r, include=TRUE}
+
+
+### get data and calculate key summary statistics
+#Read data
+#Mention the path of the data file
+#header value will be true if there any header otherwise false
+
+data <- read.table("C:/Users/Robin/Desktop/LoRaWAN/lpdata.csv", header = TRUE, sep = ",")
+head(data)
+
+#Select specific data from the dataset
+data_1= data$Throughput
+
+#Count the number of row conatining data
+n = sum(!is.na(data_1))
+
+#summary (optional)
+summary(fivenum(data_1))
+
+
+# ordering the data
+data.ordered = sort(data_1)
+head(data.ordered)
+
+#create the image in png form
+#Set the destination with name
+
+png('C:/Users/Robin/Desktop/LoRaWAN/Throughput1.png',width = 300, height = 300, units = "px", bg = "white")
+
+# plot the possible values of probability (0 to 1) against the ordered data 
+# notice the option type = '' for plotting the functions
+
+plot(data.ordered, (1:n)/n, type = 'p,c', ylim = c(0, 1), xlab = 'Throughput', ylab = 'CDF', main = 'Empirical Cumluative Distribution')
+
+
+#add quartile (if necessary)
+#ggplot(data.ordered) + stat_ecdf(geom = "step", pad = FALSE)
+# mark the 3rd quartile
+#abline(v = 62.5, h = 0.75)
+
+# add a legend (if necessary)
+#legend(65, 0.7, '3rd Quartile = 63.5', box.lwd = 0)
+
+# add the label on the y-axis (optional)
+#mtext(text = expression(hat(F)[n](x)), side = 2, line = 2.5)
+
+dev.off()
+
+
+```
+
+

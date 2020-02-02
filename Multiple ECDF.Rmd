@@ -1,0 +1,89 @@
+---
+title: "CDF"
+author: "Md Ashiqul Amin (ma3359)"
+date: "October 2, 2019"
+output: pdf_document
+---
+
+```{r, include=TRUE}
+
+
+### get data and calculate key summary statistics
+#Read data
+#Mention the path of the data file
+#header value will be true if there any header otherwise false
+
+data <- read.table("C:/Users/Robin/Desktop/LoRaWAN/Throughput.csv", header = TRUE, sep = ",")
+head(data)
+
+#Select specific data from the dataset
+data_1= data$Th_11
+data_2 = data$Th_22
+data_3 = data$Th_33
+data_4 = data$Th_44
+data_5 = data$Th_55
+
+#Count the number of row conatining data
+n = sum(!is.na(data_1))
+m = sum(!is.na(data_2))
+i = sum(!is.na(data_3))
+j = sum(!is.na(data_4))
+k = sum(!is.na(data_5))
+
+#summary (optional)
+summary(fivenum(data_1))
+summary(fivenum(data_2))
+summary(fivenum(data_3))
+summary(fivenum(data_4))
+summary(fivenum(data_5))
+
+
+# ordering the data
+data.ordered = sort(data_1)
+head(data.ordered)
+data.ordered_1 = sort(data_2)
+data.ordered_2 = sort(data_3)
+data.ordered_3 = sort(data_4)
+data.ordered_4 = sort(data_5)
+
+#create the image in png form
+
+png('C:/Users/Robin/Desktop/LoRaWAN/Th.png',width = 300, height = 300, units = "px", bg = "white")
+
+# plot the possible values of probability (0 to 1) against the ordered data 
+# notice the option type = '' for plotting the functions
+
+#data_1
+plot(data.ordered, (1:n)/n, type = 's',do.points=F, ylim = c(0, 1), xlab = 'Throughput', ylab = 'CDF',add=TRUE)
+
+plot(data.ordered_1, (1:m)/m, type = 's',do.points=F,col="red", ylim = c(0, 1),add=TRUE)
+
+#data_2
+#points(data.ordered_1, (1:m)/m, do.points=F, col="red", pch="*")
+#lines(data.ordered_1, (1:m)/m,do.points=F, col="red",lty=2)
+
+#data_3
+points(data.ordered_2, (1:i)/i, col="green", pch="+")
+lines(data.ordered_2, (1:i)/i, col="green",lty=3)
+
+#data_4
+points(data.ordered_3, (1:j)/j, col="orange", pch="o")
+lines(data.ordered_3, (1:j)/j, col="orange",lty=4)
+
+#data_5
+points(data.ordered_4, (1:k)/k, col="blue", pch="x")
+lines(data.ordered_4, (1:k)/k, col="blue",lty=5)
+
+legend('topleft', 
+       legend=c("case 1","case 2","case 3","case 4", "case 5"),  # text in the legend
+       col=c("black","red","green","orange","blue"),  # point colors
+       pch=15)  # specify the point type to be a square
+
+
+
+dev.off()
+
+
+```
+
+

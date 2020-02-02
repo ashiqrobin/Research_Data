@@ -1,0 +1,52 @@
+---
+title: "CDF RSSI"
+author: "Md Ashiqul Amin (ma3359)"
+date: "October 2, 2019"
+output: pdf_document
+---
+
+```{r, include=TRUE}
+
+
+### get data and calculate key summary statistics
+# extract "Ozone" data vector for New York
+#ozone = airquality$Ozone
+# calculate the number of non-missing values in "ozone"
+#n = sum(!is.na(ozone))
+data <- read.table("C:/Users/Robin/Desktop/LoRaWAN/lpdata.csv", header = TRUE, sep = ",")
+head(data)
+
+data_1= data$RSSI
+
+n = sum(!is.na(data_1))
+
+summary(fivenum(data_1))
+
+
+### empirical cumulative distribution function using sort() and plot()
+
+# ordering the ozone data
+data.ordered = sort(data_1)
+head(data.ordered)
+
+png('C:/Users/Robin/Desktop/LoRaWAN/RSSI1.png',width = 300, height = 300, units = "px", bg = "white")
+
+# plot the possible values of probability (0 to 1) against the ordered ozone data (sample quantiles of ozone)
+# notice the option type = 's' for plotting the step functions
+plot(data.ordered, (1:n)/n, type = 'o', ylim = c(0, 1), xlab = 'RSSI', ylab = 'CDF', main = 'Empirical Cumluative Distribution')
+#ggplot(data.ordered) + stat_ecdf(geom = "step", pad = FALSE)
+# mark the 3rd quartile
+#abline(v = 62.5, h = 0.75)
+
+# add a legend
+#legend(65, 0.7, '3rd Quartile = 63.5', box.lwd = 0)
+
+# add the label on the y-axis
+#mtext(text = expression(hat(F)[n](x)), side = 2, line = 2.5)
+
+dev.off()
+
+
+```
+
+
